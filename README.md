@@ -14,8 +14,11 @@ Une application de gestion de tâches avec un frontend React/TypeScript et un ba
 
 - Node.js (version 14 ou supérieure)
 - npm (généralement installé avec Node.js)
+- Docker et Docker Compose (pour la version conteneurisée)
 
 ## Installation
+
+### Installation Locale
 
 1. Installer les dépendances du frontend :
 ```bash
@@ -29,27 +32,40 @@ cd backend
 npm install
 ```
 
+### Installation avec Docker
+
+Pour construire et lancer l'application avec Docker :
+```bash
+docker-compose up --build
+```
+
 ## Lancement du Projet
 
-### Backend
+### Version Locale
+
+#### Backend
 
 Pour lancer le serveur backend (JSON Server) :
 ```bash
 cd backend
-npm install
 npm start
 ```
 Le serveur backend sera accessible sur http://localhost:5000
 
-### Frontend
+#### Frontend
 
 Pour lancer l'application frontend :
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 L'application frontend sera accessible sur http://localhost:5173
+
+### Version Docker
+
+Une fois les conteneurs lancés avec `docker-compose up` :
+- Frontend : http://localhost
+- Backend : http://localhost:5000
 
 ## Scripts Disponibles
 
@@ -61,3 +77,27 @@ L'application frontend sera accessible sur http://localhost:5173
 
 ### Backend
 - `npm start` : Lance le serveur JSON Server
+
+## Docker
+
+### Commandes Docker utiles
+
+- Construire et démarrer les conteneurs :
+```bash
+docker-compose up --build
+```
+
+- Démarrer les conteneurs en arrière-plan :
+```bash
+docker-compose up -d
+```
+
+- Arrêter les conteneurs :
+```bash
+docker-compose down
+```
+
+- Voir les logs :
+```bash
+docker-compose logs -f
+```
