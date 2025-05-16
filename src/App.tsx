@@ -5,6 +5,8 @@ interface Todo {
   id: number;
   text: string;
   completed: boolean;
+  createdAt: string;  // Date de création
+  dueDate: string;    // Date d'échéance
 }
 
 const API_URL = 'http://localhost:5000/todos';
@@ -12,8 +14,10 @@ const API_URL = 'http://localhost:5000/todos';
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
+  const [dueDate, setDueDate] = useState(''); // Nouvel état pour la date d'échéance
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
+  const [editDueDate, setEditDueDate] = useState(''); // Nouvel état pour l'édition de la date
 
   // Charger les todos au démarrage
   useEffect(() => {
@@ -42,12 +46,15 @@ function App() {
         },
         body: JSON.stringify({ 
           text: newTodo,
-          completed: false
+          completed: false,
+          createdAt: new Date().toISOString(), // Date de création actuelle
+          dueDate: dueDate || null // Date d'échéance (peut être null)
         }),
       });
       const data = await response.json();
       setTodos([data, ...todos]);
       setNewTodo('');
+      setDueDate(''); // Réinitialiser la date d'échéance
     } catch (error) {
       console.error('Erreur lors de l\'ajout du todo:', error);
     }
@@ -86,6 +93,7 @@ function App() {
   const startEditing = (todo: Todo) => {
     setEditingId(todo.id);
     setEditText(todo.text);
+    setEditDueDate(todo.dueDate || '');
   };
 
   const saveEdit = async (id: number) => {
@@ -97,12 +105,16 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: editText }),
+        body: JSON.stringify({ 
+          text: editText,
+          dueDate: editDueDate || null
+        }),
       });
       const updatedTodo = await response.json();
       setTodos(todos.map(t => t.id === id ? updatedTodo : t));
       setEditingId(null);
       setEditText('');
+      setEditDueDate('');
     } catch (error) {
       console.error('Erreur lors de la modification du todo:', error);
     }
@@ -111,6 +123,20 @@ function App() {
   const cancelEdit = () => {
     setEditingId(null);
     setEditText('');
+    setEditDueDate('');
+  };
+
+  // Fonction pour formater la date
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   return (
@@ -126,6 +152,12 @@ function App() {
               onChange={(e) => setNewTodo(e.target.value)}
               placeholder="Ajouter une tâche..."
               className="todo-input"
+            />
+            <input
+              type="datetime-local"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="date-input"
             />
             <button type="submit" className="add-button">
               Ajouter
@@ -145,6 +177,12 @@ function App() {
                     className="edit-input"
                     autoFocus
                   />
+                  <input
+                    type="datetime-local"
+                    value={editDueDate}
+                    onChange={(e) => setEditDueDate(e.target.value)}
+                    className="date-input"
+                  />
                   <div className="edit-buttons">
                     <button onClick={() => saveEdit(todo.id)} className="save-button">
                       Sauvegarder
@@ -163,9 +201,17 @@ function App() {
                       onChange={() => toggleTodo(todo.id)}
                       className="todo-checkbox"
                     />
-                    <span className={todo.completed ? 'completed' : ''}>
-                      {todo.text}
-                    </span>
+                    <div className="todo-text">
+                      <span className={todo.completed ? 'completed' : ''}>
+                        {todo.text}
+                      </span>
+                      <div className="todo-dates">
+                        <small>Créé le: {formatDate(todo.createdAt)}</small>
+                        {todo.dueDate && (
+                          <small>Échéance: {formatDate(todo.dueDate)}</small>
+                        )}
+                      </div>
+                    </div>
                   </div>
                   <div className="todo-actions">
                     <button
