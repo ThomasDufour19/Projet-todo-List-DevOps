@@ -1,23 +1,13 @@
 version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  app:
+    build: .
     ports:
       - "80:80"
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
       - "5000:5000"
+    volumes:
+      - ./backend/db.json:/app/backend/db.json
     networks:
       - app-network
 
