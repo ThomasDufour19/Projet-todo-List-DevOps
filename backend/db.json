@@ -1,0 +1,52 @@
+{
+  "todos": [
+    {
+      "id": "ad4a",
+      "text": "efdzef",
+      "completed": false,
+      "dueDate": null
+    },
+    {
+      "id": "971f",
+      "text": "terst",
+      "completed": false,
+      "createdAt": "2025-05-16T09:47:32.661Z",
+      "dueDate": null
+    },
+    {
+      "id": "95b1",
+      "text": "erze\"r",
+      "completed": false,
+      "createdAt": "2025-05-16T09:48:08.710Z",
+      "dueDate": "2025-05-16T16:53"
+    },
+    {
+      "id": "1697",
+      "text": "rtgrtg",
+      "completed": false,
+      "createdAt": "2025-05-16T09:49:26.829Z",
+      "dueDate": null
+    },
+    {
+      "id": "fb38",
+      "text": "bgrtbrt",
+      "completed": false,
+      "createdAt": "2025-05-16T09:49:36.845Z",
+      "dueDate": "2025-05-28T15:53"
+    },
+    {
+      "id": "fde4",
+      "text": "fzbizjefn",
+      "completed": false,
+      "createdAt": "2025-05-16T09:49:44.361Z",
+      "dueDate": null
+    },
+    {
+      "id": "c3fc",
+      "text": "dsrnhdesthbn",
+      "completed": false,
+      "createdAt": "2025-05-16T09:55:26.785Z",
+      "dueDate": "2025-06-23T15:59"
+    }
+  ]
+}
