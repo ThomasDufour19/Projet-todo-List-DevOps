@@ -1,54 +1,63 @@
-# React + TypeScript + Vite
+# TODO List Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une application de gestion de tâches avec un frontend React/TypeScript et un backend JSON Server.
 
-Currently, two official plugins are available:
+## Structure du Projet
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```
+.
+├── frontend/          # Application React/TypeScript
+└── backend/          # API JSON Server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Prérequis
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Node.js (version 14 ou supérieure)
+- npm (généralement installé avec Node.js)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Installation
+
+1. Installer les dépendances du frontend :
+```bash
+cd frontend
+npm install
 ```
+
+2. Installer les dépendances du backend :
+```bash
+cd backend
+npm install
+```
+
+## Lancement du Projet
+
+### Backend
+
+Pour lancer le serveur backend (JSON Server) :
+```bash
+cd backend
+npm install
+npm start
+```
+Le serveur backend sera accessible sur http://localhost:5000
+
+### Frontend
+
+Pour lancer l'application frontend :
+```bash
+cd frontend
+npm install
+npm run dev
+```
+L'application frontend sera accessible sur http://localhost:5173
+
+## Scripts Disponibles
+
+### Frontend
+- `npm run dev` : Lance le serveur de développement
+- `npm run build` : Compile le projet pour la production
+- `npm run preview` : Prévisualise la version de production
+- `npm run lint` : Vérifie le code avec ESLint
+
+### Backend
+- `npm start` : Lance le serveur JSON Server
