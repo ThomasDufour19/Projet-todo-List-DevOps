@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 interface Todo {
@@ -7,32 +7,80 @@ interface Todo {
   completed: boolean;
 }
 
+const API_URL = 'http://localhost:5000/todos';
+
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
 
-  const addTodo = (e: React.FormEvent) => {
+  // Charger les todos au démarrage
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const fetchTodos = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setTodos(data);
+    } catch (error) {
+      console.error('Erreur lors du chargement des todos:', error);
+    }
+  };
+
+  const addTodo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newTodo.trim() === '') return;
     
-    setTodos([...todos, {
-      id: Date.now(),
-      text: newTodo,
-      completed: false
-    }]);
-    setNewTodo('');
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          text: newTodo,
+          completed: false
+        }),
+      });
+      const data = await response.json();
+      setTodos([data, ...todos]);
+      setNewTodo('');
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du todo:', error);
+    }
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+  const toggleTodo = async (id: number) => {
+    try {
+      const todo = todos.find(t => t.id === id);
+      if (!todo) return;
+
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: !todo.completed }),
+      });
+      const updatedTodo = await response.json();
+      setTodos(todos.map(t => t.id === id ? updatedTodo : t));
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du todo:', error);
+    }
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const deleteTodo = async (id: number) => {
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+      });
+      setTodos(todos.filter(todo => todo.id !== id));
+    } catch (error) {
+      console.error('Erreur lors de la suppression du todo:', error);
+    }
   };
 
   const startEditing = (todo: Todo) => {
@@ -40,14 +88,24 @@ function App() {
     setEditText(todo.text);
   };
 
-  const saveEdit = (id: number) => {
+  const saveEdit = async (id: number) => {
     if (editText.trim() === '') return;
     
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, text: editText } : todo
-    ));
-    setEditingId(null);
-    setEditText('');
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: editText }),
+      });
+      const updatedTodo = await response.json();
+      setTodos(todos.map(t => t.id === id ? updatedTodo : t));
+      setEditingId(null);
+      setEditText('');
+    } catch (error) {
+      console.error('Erreur lors de la modification du todo:', error);
+    }
   };
 
   const cancelEdit = () => {
