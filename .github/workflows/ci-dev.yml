@@ -2,9 +2,9 @@ name: CI (Dev)
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ["dev"]
   pull_request:
-    branches: [ "dev" ]
+    branches: ["dev"]
 
 jobs:
   build:
@@ -18,8 +18,8 @@ jobs:
       - name: Use Node.js for Backend
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
           working-directory: backend
 
       - name: Install Backend Dependencies
@@ -29,8 +29,8 @@ jobs:
       - name: Use Node.js for Frontend
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
-          cache: 'npm'
+          node-version: "18.x"
+          cache: "npm"
           working-directory: frontend
 
       - name: Install Frontend Dependencies
