@@ -2,7 +2,7 @@ name: CI (Dev)
 
 on:
   push:
-    branches: [ "dev", "feature/**" ] # Déclenche aussi pour les branches de fonctionnalités (/feature/** conformément au process défini pour GitHub - cf Confluence)
+    branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
 
@@ -18,7 +18,7 @@ jobs:
       - name: Use Node.js for Backend
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '18.x'
           cache: 'npm'
           working-directory: backend
 
@@ -29,7 +29,7 @@ jobs:
       - name: Use Node.js for Frontend
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '18.x'
           cache: 'npm'
           working-directory: frontend
 
