@@ -1,0 +1,43 @@
+name: CI (Dev)
+
+on:
+  push:
+    branches: [ "dev", "feature/**" ] # Déclenche aussi pour les branches de fonctionnalités (/feature/** conformément au process défini pour GitHub - cf Confluence)
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v4
+
+      # Backend setup
+      - name: Use Node.js for Backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+          working-directory: backend
+
+      - name: Install Backend Dependencies
+        run: npm install
+
+      # Frontend setup
+      - name: Use Node.js for Frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+          working-directory: frontend
+
+      - name: Install Frontend Dependencies
+        run: npm install
+
+      - name: Lint Frontend
+        run: npm run lint
+
+      - name: Build Frontend
+        run: npm run build
